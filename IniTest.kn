@@ -1,0 +1,102 @@
+{
+    IniTest.kn v0.01 (for Kuin 0.023):
+        Last Modified: 2013/04/28 12:46:37.
+        Created by @tatt61880
+            https://twitter.com/tatt61880
+            https://github.com/tatt61880
+}
+import Ini
+
+const filename:[]char :: "IniTest_data1.knd"
+var you:IniTest@Human
+var rival:IniTest@Human
+var kuina:IniTest@Human
+var ini:Ini@Ini
+
+func Main()
+    do IniTest@ini :: (@new Ini@Ini).Init(IniTest@filename)
+    do IniTest@you :: (@new IniTest@Human).Init("あなた", false)
+    do IniTest@rival :: (@new IniTest@Human).Init("ライバル", false)
+    do IniTest@kuina :: (@new IniTest@Human).Init("くいなちゃん", true)
+    if (Load() = false)
+        do IniTest@you :: (@new IniTest@Human).Init("あなた", false)
+        do IniTest@rival :: (@new IniTest@Human).Init("ライバル", false)
+        do IniTest@kuina :: (@new IniTest@Human).Init("くいなちゃん", true)
+        do Save()
+        do Kuin@Dbg("セーブデータを新規作成しました。")
+    else
+        do Kuin@Dbg("セーブデータを読み込みました。")
+    end if
+
+    do Kuin@Dbg("セーブデータの中身[[[\n" ~ SaveData@Load(IniTest@filename) ~ "\n]]]\n")
+    do IniTest@you.LevelUp()
+    do IniTest@rival.LevelUp()
+    do Kuin@Dbg("セーブデータを保存します。\n")
+    do Save()
+    do Kuin@Dbg("セーブデータの中身[[[\n" ~ SaveData@Load(IniTest@filename) ~ "\n]]]\n")
+
+    func Save()
+        do SaveStatus(IniTest@you)
+        do SaveStatus(IniTest@rival)
+        func SaveStatus(human:IniTest@Human)
+            do IniTest@ini.SetInt(human.name, "レベル", human.level)
+            do IniTest@ini.SetInt(human.name, "強さ", human.strength)
+            do IniTest@ini.SetInt(human.name, "賢さ", human.cleverness)
+            do IniTest@ini.SetInt(human.name, "逞しさ", human.hardiness)
+        end func
+    end func
+    func Load() :bool
+        var loadtest:[]char :: SaveData@Load(IniTest@filename)
+        if (loadtest = null)
+            return false
+        end if
+        var result:bool :: LoadStatus(IniTest@you) & LoadStatus(IniTest@rival)
+        func LoadStatus(human:IniTest@Human) :bool
+            do human.level :: IniTest@ini.GetInt(human.name, "レベル", -1)
+            do human.strength :: IniTest@ini.GetInt(human.name, "強さ", -1)
+            do human.cleverness :: IniTest@ini.GetInt(human.name, "賢さ", -1)
+            do human.hardiness :: IniTest@ini.GetInt(human.name, "逞しさ", -1)
+            if (human.strength = -1 | human.cleverness = -1 | human.hardiness = -1 | human.level = -1)
+                return false
+            else
+                return true
+            end if
+        end func
+        if (result = false)
+            do Kuin@Dbg("お気の毒ですが、セーブデータが破損しています。")
+            return false
+        end if
+        return true
+    end func
+end func
+
+class Human()
+    var name:[]char
+    var strength:int
+    var cleverness:int
+    var hardiness:int
+    var level:int
+    func Init(name:[]char, isKuina:bool) :Human
+        do this.name :: name
+        if (isKuina)
+            do this.strength :: inf$int
+            do this.cleverness :: inf$int
+            do this.hardiness :: inf$int
+            do this.level :: inf$int
+        else
+            do this.strength :: 10
+            do this.cleverness :: 20
+            do this.hardiness :: 1
+            do this.level :: 1
+        end if
+        return this
+    end func
+    func LevelUp()
+        do Kuin@Dbg("♪♪" ~ this.name ~ "がレベルアップしました♪♪")
+        do this.strength :+ Kuin@Rand(2, 5)
+        do this.cleverness :+ Kuin@Rand(5, 10)
+        do this.hardiness :+ Kuin@Rand(1, 3)
+        do this.level :+ 1
+    end func
+end class
+
