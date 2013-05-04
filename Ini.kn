@@ -1,25 +1,25 @@
 {
-    Ini.kn v0.01 (for Kuin 0.023):
-        Last Modified: 2013/04/28 12:42:41.
+    Ini.kn v0.02 (for Kuin 0.023):
+        Last Modified: 2013/05/04 21:18:37.
         Created by @tatt61880
             https://twitter.com/tatt61880
             https://github.com/tatt61880
 }
 
-class Ini()
-    var filename:[]char
-    func Init(filename_:[]char) :Ini
+class CIni()
+    var filename :[]char
+    func Init(filename_ :[]char) :CIni
         do this.filename :: filename_
         return this
     end func
-    func SetStr(sections_:[]char, key_:[]char, value_:[]char) :bool
-        var num:int :: this.GetLineNum()
-        var keys:[][]char :: @new [num][]char
-        var values:[][]char :: @new [num][]char
+    func SetStr(sections_ :[]char, key_ :[]char, value_ :[]char) :bool
+        var num :int :: this.GetLineNum()
+        var keys :[][]char :: @new [num][]char
+        var values :[][]char :: @new [num][]char
         do this.LoadData(keys, values)
-        var sk:[]char :: sections_ ~ "@" ~ key_
+        var sk :[]char :: sections_ ~ "@" ~ key_
 
-        var new_data:[]char :: ""
+        var new_data :[]char :: ""
         for i(0, num-1)
             if (this.StrEqual(keys[i], sk) = false)
                 do new_data :~ keys[i] ~ "=" ~ values[i] ~ "\n"
@@ -30,12 +30,12 @@ class Ini()
         end if
         do SaveData@Save(this.filename, new_data)
     end func
-    func GetStr(sections_:[]char, key_:[]char, default_:[]char) :[]char
-        var num:int :: this.GetLineNum()
-        var keys:[][]char :: @new [num][]char
-        var values:[][]char :: @new [num][]char
+    func GetStr(sections_ :[]char, key_ :[]char, default_ :[]char) :[]char
+        var num :int :: this.GetLineNum()
+        var keys :[][]char :: @new [num][]char
+        var values :[][]char :: @new [num][]char
         do this.LoadData(keys, values)
-        var sk:[]char :: sections_ ~ "@" ~ key_
+        var sk :[]char :: sections_ ~ "@" ~ key_
 
         for i(0, num-1)
             if (this.StrEqual(keys[i], sk))
@@ -44,24 +44,24 @@ class Ini()
         end for
         return default_
     end func
-    func SetInt(sections_:[]char, key_:[]char, value_:int) :bool
+    func SetInt(sections_ :[]char, key_ :[]char, value_ :int) :bool
         return this.SetStr(sections_, key_, value_.ToStr())
     end func
-    func GetInt(sections_:[]char, key_:[]char, default_:int) :int
-        return this.GetStr(sections_, key_, default_.ToStr())$int
+    func GetInt(sections_ :[]char, key_ :[]char, default_ :int) :int
+        return this.GetStr(sections_, key_, default_.ToStr()) $int
     end func
 
-    -func LoadData(keys:[][]char, values:[][]char) :bool
-        var temp:[][]char
-        var key:[]char
-        var value:[]char
-        var data:[]char :: SaveData@Load(this.filename)
+    -func LoadData(keys :[][]char, values :[][]char) :bool
+        var temp :[][]char
+        var key :[]char
+        var value :[]char
+        var data :[]char :: SaveData@Load(this.filename)
         if (data = null)
             do data :: ""
             return false
         end if
-        var i:int :: 0
-        var index:int :: 0
+        var i :int :: 0
+        var index :int :: 0
         while (i < data.Len())
             do key :: ""
             do value :: ""
@@ -82,11 +82,11 @@ class Ini()
         return true
     end func
     -func GetLineNum() :int
-        var data:[]char :: SaveData@Load(this.filename)
+        var data :[]char :: SaveData@Load(this.filename)
         if (data = null)
             return 0
         end if
-        var count:int :: 0
+        var count :int :: 0
         for i(0, data.Len()-1)
             if (data[i] = '\n')
                 do count :+ 1
@@ -94,7 +94,7 @@ class Ini()
         end for
         return count
     end func
-    -func StrEqual(a:[]char, b:[]char) :bool
+    -func StrEqual(a :[]char, b :[]char) :bool
         if (a.Len() <> b.Len())
             return false
         end if
