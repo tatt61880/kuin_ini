@@ -1,6 +1,6 @@
 {{{
-	Ini.kn v0.5 (for Kuin 1.01):
-		Last Modified: 2014/02/16 01:21:21.
+	Ini.kn v0.6 (for Kuin 1.01):
+		Last Modified: 2014/02/16 01:24:09.
 		Created by @tatt61880
 			https://twitter.com/tatt61880
 			https://github.com/tatt61880
@@ -21,7 +21,7 @@ class CIni()
 
 		var new_data: []char :: ""
 		for i(0, num-1)
-			if(me.StrEqual(keys[i], sk) = false)
+			if(keys[i] <> sk)
 				do new_data :~ keys[i] ~ "=" ~ values[i] ~ "\n"
 			end if
 		end for
@@ -38,7 +38,7 @@ class CIni()
 		var sk: []char :: sections_ ~ "@" ~ key_
 
 		for i(0, num - 1)
-			if(me.StrEqual(keys[i], sk))
+			if(keys[i] = sk)
 				return values[i]
 			end if
 		end for
@@ -93,17 +93,6 @@ class CIni()
 			end if
 		end for
 		return count
-	end func
-	-func StrEqual(a: []char, b: []char): bool
-		if(a.Len() <> b.Len())
-			return false
-		end if
-		for i(0, a.Len() - 1)
-			if(a[i] <> b[i])
-				return false
-			end if
-		end for
-		return true
 	end func
 end class
 
