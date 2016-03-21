@@ -1,6 +1,6 @@
 {
-	Ini.kn v1.00 (for Kuin 1.00):
-		Last Modified: 2013/10/19 18:03:48.
+	Ini.kn v0.6 (for Kuin 1.01):
+		Last Modified: 2016/03/21 23:21:14.
 		Created by @tatt61880
 			https://twitter.com/tatt61880
 			https://github.com/tatt61880
@@ -26,7 +26,9 @@ class CIni()
 	func GetInt(sections_ :[]char, key_ :[]char, default_ :int) :int
 
 【更新履歴】
-v1.00 2013/10/19
+v0.60 2014/02/16
+	[修正] Kuin 1.01で動作します。
+v0.50 2013/10/19
 	[修正] Kuin 1.00でコンパイルできるように修正しました。
 v0.02 2013/05/04
 	[変更] クラス名の先頭にはCを付けるようにしました。
@@ -36,4 +38,3 @@ v0.01 2013/04/28
 
 【参考】kndファイルは私の環境では下記に保存されていました。
 	C:\Users\%USERNAME%\AppData\Roaming\MUP26ZR2TCP6KRT48EPSU6ZWBZKHJSMC
-
